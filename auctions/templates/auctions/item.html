@@ -1,0 +1,42 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{ product.title }}</h2>
+    {% if user.is_authenticated %}
+        {% if watchlist %}
+            <form action="{{product.id}}/remove">
+                <input type="submit" value="Remove from Watchlist" />
+            </form>
+        {% else %}
+            <form action="{{product.id}}/add">
+                <input type="submit" value="Add to Watchlist" />
+            </form>
+        {% endif %}
+
+    {% endif %}
+
+    <img src={{product.image}}></img>
+    <h3>{{product.price}}</h3>
+    <ul>
+        <li>Description: {{product.description}}</li>
+        <li>Category: {{product.category}}</li>
+        <li>Created: {{product.created}}</li>
+    </ul>
+
+    {% if bids %}
+        <p>Currently {{ bids|length }} bid(s) so far.{% if last_bid %} You are the current bid.{% endif %}</p>
+    {% endif %}
+
+    
+
+    {% if user.is_authenticated %}
+        <form action="{{product.id}}/bid">
+            <label for="price">Place a bid!</label>
+            <input type="number" placeholder="Place your Bid..." min={{product.price}} max="999999.99" name="price">
+            <input type="submit" value="Bid!" />
+        </form>
+    {% else %}
+        <p>Please <a href="{% url 'login' %}">Log In</a> to place a bid!</p>
+    {% endif %}
+    
+{% endblock %}
