@@ -182,13 +182,18 @@ def get_categories(request):
 
 #agregar error handling! sobre todo si no hay categoria, el del producto maso menos zafa
 def category(request, pk):
-    
-    category = list(filter(lambda x: x[0] == pk, categories))[0]
-    products = Product.objects.filter(category = category[1])
 
-    if not products or not category: products = None
+    category = list(filter(lambda x: x[0] == pk, categories))
 
-    context = {"products" : products, "category" : category[1]}
+    #if not empty, set value to first item's name
+    if category: category = category[0][1]
+    else: return HttpResponseRedirect(reverse('index'))
+
+    products = Product.objects.filter(category = category)
+
+
+    if not products: products = None
+    context = {"products" : products, "category" : category}
 
     return render(request, "auctions/category.html", context)
 
@@ -300,7 +305,6 @@ def close(request, pk):
             return display_item(request, pk, is_open = False)
 
     else: return HttpResponseRedirect(reverse("index"))
-
 
 
 categories_first()
