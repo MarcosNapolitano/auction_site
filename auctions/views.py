@@ -28,6 +28,20 @@ class new_auction(ModelForm):
             'price': forms.NumberInput(attrs={'placeholder': 'u$D 10.00'}),
             'image': forms.URLInput(attrs={'placeholder': 'Image url'})
         }
+
+
+#code reducer
+def query_product(id):
+    try:
+        return Product.objects.get(pk = id)
+    except ObjectDoesNotExist:
+        return None
+
+def query_product(id):
+    try:
+        return Product.objects.get(pk = id)
+    except ObjectDoesNotExist:
+        return None
         
 
 def index(request):
@@ -114,48 +128,78 @@ def create_auction(request):
     return render(request, "auctions/createAuction.html", {"form":new_auction()})
 
 
-def display_item(request, pk):
+def display_item(request, pk, is_open = True):
 
-    #query if user has the current item on watchlist
-    try:
-        watchlist = Product.objects.filter(watchlist=request.user.id).get(pk=pk)
+    #query current product
+    product = query_product(pk)
 
-    except ObjectDoesNotExist:
-        watchlist = False
+    if product : 
 
-    #query if any bid was placed on the current item
-    try:
-        bids = Bid.objects.filter(product=pk)
-        last_bid = bids.order_by('-created').first() #prevents error if NONE!
+        #query if still open and search for winner in that case
+        if not product.is_open: 
+            is_open = False
+            winner = product.winner.username
+        else:
+            winner = None
+    
+        #query if user has the current item on watchlist
+        try:
+            watchlist = Product.objects.filter(watchlist=request.user.id).get(pk=pk)
 
-        #only if authenticated
-        if request.user.is_authenticated and last_bid:
+        except ObjectDoesNotExist:
+            watchlist = False
 
-            if request.user.id == last_bid.user.id: last_bid = True
+        #query if any bid was placed on the current item
+        try:
+            bids = Bid.objects.filter(product=pk)
+            last_bid = bids.order_by('-created').first() #prevents error if NONE!
+
+            #only if authenticated
+            if request.user.is_authenticated:
+
+                if request.user.id == last_bid.user.id: last_bid = True
+                else: last_bid = False
                 
             else: last_bid = False
 
-    except ObjectDoesNotExist:
-        bids = False
+        except ObjectDoesNotExist:
+            bids = False
 
-    product = Product.objects.get(pk=pk)
+        #if you are the author of the product
+        if request.user.is_authenticated and product.user_id == request.user.id: owner = True
 
-    context = {"product":product, "watchlist" : watchlist, "bids" : bids, "last_bid" : last_bid}
+        
+        
+        else: owner = False
 
-    return render(request, "auctions/item.html", context)
+        context = {"product":product, "watchlist" : watchlist, "bids" : bids, 
+                "last_bid" : last_bid, "owner" : owner, "open" : is_open, "winner":winner}
+
+        return render(request, "auctions/item.html", context)
+    
+    else: return HttpResponseRedirect(reverse("index"))
 
 
 @login_required(login_url="login")
 def add_to_watchlist(request, pk):
 
-    Product.objects.get(pk=pk).watchlist.add(request.user)
+    product = query_product(pk)
 
+    if product : product.watchlist.add(request.user)
+        
+    else: return HttpResponseRedirect(reverse("index"))
+    
     return HttpResponseRedirect(reverse("item", kwargs={'pk':pk}))
+
 
 @login_required(login_url="login")
 def remove_from_watchlist(request, pk):
 
-    Product.objects.get(pk=pk).watchlist.remove(request.user)
+    product = query_product(pk)
+
+    if product : product.watchlist.remove(request.user)
+        
+    else: return HttpResponseRedirect(reverse("index"))
 
     return HttpResponseRedirect(reverse("item", kwargs={'pk':pk}))
 
@@ -163,13 +207,48 @@ def remove_from_watchlist(request, pk):
 @login_required(login_url="login")
 def bid(request, pk):
 
-    price = float(request.GET.get('price',''))
-    product = Product.objects.get(pk=pk)
-    
-    if price>product.price:
-        bid = Bid(user = request.user, product = product, bid = price)
-        bid.save()
-        product.price = price
-        product.save()
+    product = query_product(pk)
 
-    return HttpResponseRedirect(reverse("item", kwargs={'pk':pk}))
+    if product : 
+
+        price = float(request.GET.get('price',''))
+        
+        if price>product.price:
+            bid = Bid(user = request.user, product = product, bid = price)
+            bid.save()
+            product.price = price
+            product.save()
+
+        return HttpResponseRedirect(reverse("item", kwargs={'pk':pk}))
+    
+    else: return HttpResponseRedirect(reverse("index"))
+
+
+@login_required(login_url="login")
+def close(request, pk):
+
+    product = query_product(pk)
+
+    if product :
+
+        if request.user.is_authenticated and product.user_id == request.user.id: 
+
+            product.is_open = False
+
+            #find bids if any
+            bids = Bid.objects.filter(product=pk).order_by('-created').first()
+
+            if bids: 
+
+                try: product.winner = User.objects.get(pk = bids.user_id)
+                
+                #if user was deleted
+                except ObjectDoesNotExist: product.winner = None
+
+            product.save()
+            
+            return display_item(request, pk, is_open = False)
+
+    else: return HttpResponseRedirect(reverse("index"))
+
+    

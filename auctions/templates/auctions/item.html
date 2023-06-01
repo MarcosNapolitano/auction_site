@@ -12,6 +12,16 @@
                 <input type="submit" value="Add to Watchlist" />
             </form>
         {% endif %}
+        {% if owner and open %}
+            <form action="{{product.id}}/close">
+                <input type="submit" value="Close Auction" />
+            </form>
+            
+        {% endif %}
+
+        {% if not open %}
+            <p>Closed Auction</p>
+        {% endif %}
 
     {% endif %}
 
@@ -23,20 +33,27 @@
         <li>Created: {{product.created}}</li>
     </ul>
 
-    {% if bids %}
+    {% if bids and open %}
         <p>Currently {{ bids|length }} bid(s) so far.{% if last_bid %} You are the current bid.{% endif %}</p>
     {% endif %}
 
     
 
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and open %}
         <form action="{{product.id}}/bid">
             <label for="price">Place a bid!</label>
             <input type="number" placeholder="Place your Bid..." min={{product.price}} max="999999.99" name="price">
             <input type="submit" value="Bid!" />
         </form>
-    {% else %}
+    {% elif not user.is_authenticated  %}
         <p>Please <a href="{% url 'login' %}">Log In</a> to place a bid!</p>
+    {% elif not open %}
+        <p>
+            Auction is closed!
+            {% if winner %}
+            Congratulations {{winner}} for winning the auction!
+            {% endif %}
+        </p>
     {% endif %}
     
 {% endblock %}
