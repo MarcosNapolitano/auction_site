@@ -1,4 +1,4 @@
-from .models import User, Product, Bid
+from .models import User, Product, Bid, Comment
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
@@ -14,6 +14,7 @@ from django.forms import ModelForm
 from django import forms
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+
 
 
 class new_auction(ModelForm):
@@ -37,16 +38,22 @@ def query_product(id):
     except ObjectDoesNotExist:
         return None
 
-def query_product(id):
-    try:
-        return Product.objects.get(pk = id)
-    except ObjectDoesNotExist:
-        return None
-        
+#need a first run to work
+def categories_first():
+    #query a product that MUST exist just to get the category list
+    #maybe create a separate category model?
+    product = query_product(2)
+
+    global categories 
+
+    #original list in models is a tuple just need the first element!
+    categories = list(map(lambda x: x[0], product.category_choice))
+    categories = list(enumerate(categories))
+    
 
 def index(request):
 
-    context = {"product_list" : Product.objects.all()}
+    context = {"product_list" : Product.objects.filter(is_open = True)}
 
     return render(request, "auctions/index.html", context)
 
@@ -103,35 +110,20 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
-@login_required(login_url="login")
-def create_auction(request):
-    if request.method=="POST": 
-
-        form = new_auction(request.POST)
-
-        if form.is_valid():
-
-            try:
-                product = form.save(commit=False)
-                product.user = request.user
-                product.save()
-
-            except IntegrityError:
-                return render(request, "auctions/createAuction.html", {"form":form, "error":error})
-            
-            return HttpResponseRedirect(reverse("item", kwargs={'pk':product.id}))
-
-        else:
-
-            return render(request, "auctions/createAuction.html", {"form":form})
-            
-    return render(request, "auctions/createAuction.html", {"form":new_auction()})
-
-
 def display_item(request, pk, is_open = True):
 
     #query current product
     product = query_product(pk)
+
+    #someone commented!
+    if request.method == "POST" and request.user.is_authenticated: 
+
+        Comment(product = product, 
+                user = request.user, 
+                comment = request.POST.get("comment")).save()
+        
+        return HttpResponseRedirect(reverse("item", kwargs={'pk':pk}))
+        
 
     if product : 
 
@@ -167,17 +159,75 @@ def display_item(request, pk, is_open = True):
 
         #if you are the author of the product
         if request.user.is_authenticated and product.user_id == request.user.id: owner = True
-
-        
         
         else: owner = False
 
-        context = {"product":product, "watchlist" : watchlist, "bids" : bids, 
-                "last_bid" : last_bid, "owner" : owner, "open" : is_open, "winner":winner}
+        #query comments
+        comments = Comment.objects.filter(product_id = pk)
+
+        context = {"product"  : product,  "watchlist" : watchlist, "bids" : bids, 
+                   "last_bid" : last_bid, "owner"     : owner,     "open" : is_open, 
+                   "winner"   : winner,   "comments"  : comments}
 
         return render(request, "auctions/item.html", context)
     
     else: return HttpResponseRedirect(reverse("index"))
+
+
+def get_categories(request):
+    
+    categories_first()
+    context = {"categories" : categories}
+    return render(request, "auctions/categories_hub.html", context)
+
+#agregar error handling! sobre todo si no hay categoria, el del producto maso menos zafa
+def category(request, pk):
+    
+    category = list(filter(lambda x: x[0] == pk, categories))[0]
+    products = Product.objects.filter(category = category[1])
+
+    if not products or not category: products = None
+
+    context = {"products" : products, "category" : category[1]}
+
+    return render(request, "auctions/category.html", context)
+
+
+
+# --------------------------------------- LOGIN REQUIRED --------------------------------------- #
+
+@login_required(login_url="login")
+def create_auction(request):
+    if request.method=="POST": 
+
+        form = new_auction(request.POST)
+
+        if form.is_valid():
+
+            try:
+                product = form.save(commit=False)
+                product.user = request.user
+                product.save()
+
+            except IntegrityError:
+                return render(request, "auctions/createAuction.html", {"form":form, "error":error})
+            
+            return HttpResponseRedirect(reverse("item", kwargs={'pk':product.id}))
+
+        else:
+
+            return render(request, "auctions/createAuction.html", {"form":form})
+            
+    return render(request, "auctions/createAuction.html", {"form":new_auction()})
+
+
+@login_required(login_url="login")
+def watchlist(request):
+    
+
+    context = {"products" : Product.objects.filter(watchlist = request.user)}
+
+    return render(request, "auctions/watchlist.html", context)
 
 
 @login_required(login_url="login")
@@ -251,4 +301,6 @@ def close(request, pk):
 
     else: return HttpResponseRedirect(reverse("index"))
 
-    
+
+
+categories_first()

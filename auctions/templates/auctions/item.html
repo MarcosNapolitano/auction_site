@@ -1,5 +1,8 @@
 {% extends "auctions/layout.html" %}
 
+{% block title %}Auctions | {{ product.title }} {% endblock %}
+
+
 {% block body %}
     <h2>{{ product.title }}</h2>
     {% if user.is_authenticated %}
@@ -54,6 +57,22 @@
             Congratulations {{winner}} for winning the auction!
             {% endif %}
         </p>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <form method="POST">
+        {% csrf_token %}
+            <label for="comment">Leave a comment!</label>
+            <textarea name="comment" placeholder="Nice Item!" rows="4" cols="50"></textarea>
+            <input type="submit" value="Comment!" />
+        </form>
+    {% endif %}
+    {% if comments %}
+    <ul>
+        {% for i in comments %}
+        <li>{{i.comment}}</li>
+        {% endfor %}
+    </ul>
     {% endif %}
     
 {% endblock %}
