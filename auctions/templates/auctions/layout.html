@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Auctions</h1>
-        <div>
+        <div class="signed">
             {% if user.is_authenticated %}
                 Signed in as <strong>{{ user.username }}</strong>.
             {% else %}
@@ -55,5 +55,13 @@
         <hr>
         {% block body %}
         {% endblock %}
+    <footer>
+        <center>
+            <small>Made by Marcos Napolitano - 
+            Contact me at <a href="mailto:marcosnapolitano7@gmail.com">marcosnapolitano7@gmail.com</a>
+            or visit my webpage <a href="marcosnapolitano.github.io">marcosnapolitano.github.io</a>
+            </small>
+        </center>
+    </footer>
     </body>
 </html>

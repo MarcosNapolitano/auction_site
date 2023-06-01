@@ -5,13 +5,20 @@
 
     {% for i in product_list %}
 
-    <div>
-        <h3><a href="{% url 'item' i.id %}">{{i.title}}</a></h3>
-        <p>{{i.description}}</p>
-        <p>{{i.price}}</p>
+    <div class="listing">
+
         {% if i.image %}
+        <center>
             <img src={{i.image}} alt={{i.title}}></img>
+        </center>
         {% endif %}
+        <div class="listing-desc">
+            <h3><a href="{% url 'item' i.id %}">{{i.title}}</a></h3>
+            <p><b>Price:</b> ${{i.price}}</p>
+            <p>{{i.description}}</p>
+            <p>Posted on {{i.created}}</p>
+        </div>
+
     </div>
     
     

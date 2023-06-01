@@ -21,7 +21,7 @@ class new_auction(ModelForm):
 
     class Meta:
         model = Product
-        exclude = ["user", "watchlist"]
+        exclude = ["user", "watchlist", "is_open", "winner"]
 
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Broom'}),
@@ -180,12 +180,12 @@ def get_categories(request):
     context = {"categories" : categories}
     return render(request, "auctions/categories_hub.html", context)
 
-#agregar error handling! sobre todo si no hay categoria, el del producto maso menos zafa
+
 def category(request, pk):
 
     category = list(filter(lambda x: x[0] == pk, categories))
 
-    #if not empty, set value to first item's name
+    #if not empty, set value to first item's name, else redirect home
     if category: category = category[0][1]
     else: return HttpResponseRedirect(reverse('index'))
 
@@ -196,7 +196,6 @@ def category(request, pk):
     context = {"products" : products, "category" : category}
 
     return render(request, "auctions/category.html", context)
-
 
 
 # --------------------------------------- LOGIN REQUIRED --------------------------------------- #
@@ -212,6 +211,7 @@ def create_auction(request):
             try:
                 product = form.save(commit=False)
                 product.user = request.user
+                product.title.title()
                 product.save()
 
             except IntegrityError:
