@@ -1,5 +1,4 @@
 :root {
-    box-sizing: border-box;
     color-scheme: light dark;
     scroll-behavior: smooth;
 
@@ -49,7 +48,15 @@ html{
 }
 
 body{
+    
     margin:0;
+    min-height: 100vh;
+    
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   
 }
 
@@ -57,20 +64,24 @@ body{
 
 h1{
     margin: 0;
-    padding: 0 3vh;
     font-size: 5vh;
 
 }
 
 hr{
-    margin: 1vh;
+    margin: 8vh auto;
+    margin-bottom: 4vh;
     border: 1px solid var(--accent3)
 }
 
+footer{
+    width: 100%;
+    margin-top: auto;
+}
 
 
 footer>center{
-    margin-top: 2.5vh;
+    margin: 2.5vh auto;
 }
 
 a{
@@ -78,10 +89,15 @@ a{
     color: var(--main-font)
 }
 
+header{
+    width: 100%;
+}
+
 
 .nav{
+    width: 100%;
     margin-top: 0;
-    padding: 0 2vh;
+    padding: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -122,6 +138,76 @@ a{
     width: 100%;
     font-weight: 600;
 }
+
+/* #carrousel{
+    overflow: hidden;
+
+}
+
+.slide{
+    height: 200px;
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    
+
+
+}
+
+.carrousel_item{
+
+    height: 100%;
+    width: 100%;
+    flex-shrink: 0;
+
+}
+
+#carrousel_item1{
+    background-color: #213547;
+
+}
+
+#carrousel_item2{
+    background-color: #72642a;
+    
+}
+#carrousel_item3{
+    background-color: #36722a;
+    
+}
+
+
+.first{
+    margin-left: -100%;
+}
+
+.carrousel_card{
+    
+    height: 100%;
+}
+
+/* .carrousel_arrows{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: var(--main-font);
+    font-size: 3vh;
+
+} */
+
+/* .carrousel_arrows>#arrow1{
+    padding-left: 2vh;
+}
+
+.carrousel_arrows>#arrow2{
+    padding-right: 2vh;
+}  */
+
 
 
 .listing{
@@ -195,4 +281,9 @@ a{
 .component_item:hover>p{
     text-decoration: underline;
 
+}
+
+#create>form{
+    display: flex;
+    flex-direction: column;
 }
