@@ -1,0 +1,20 @@
+<div id="component">
+
+    <div class="component_title">
+        <h2>Most bidden items in {{category.title}}</h2>
+        <a href="categories/{{category.id}}">see full list</a>
+    </div>
+
+    <div class="component_body">  
+        {% for item in most_sold %}
+            <a href="auction/{{item.id}}">
+            <div class = "component_item">
+                <img src={{item.image}} alt = {{item.title}}></img>
+                <p>{{item.title}}</p>
+            </div>
+            </a>
+
+        {% endfor %}
+    </div> 
+
+</div>

@@ -45,6 +45,9 @@ class Product(models.Model):
     def get_winner(self):
         return self.winner.id
 
+    class Meta:
+        ordering = ["-updated"]
+
     
 class Bid(models.Model):
 

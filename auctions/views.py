@@ -53,7 +53,13 @@ def categories_first():
 
 def index(request):
 
-    context = {"product_list" : Product.objects.filter(is_open = True)}
+    category = {"title" : "Home décor & Maintenance", "id" : 1} #could later be changed
+    product_list = Product.objects.filter(is_open = True)
+    most_sold   = product_list.filter(category = category["title"])[:5] #only 5 results
+    most_recent = product_list.order_by('-created')[:5] #only 5 results
+
+    context = {"product_list" : product_list, "category" : category,
+               "most_sold" : most_sold, "most_recent" : most_recent}
 
     return render(request, "auctions/index.html", context)
 
