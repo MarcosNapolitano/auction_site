@@ -4,24 +4,24 @@
 
 {% block body %}
 
-   <div id="create">
-      <h2>Create Auction</h2>
 
-      <form method="post">
+   <h2>Create Auction</h2>
 
-         {% csrf_token %}
+   <form method="post" id="create">
 
-         {{form}}
+      {% csrf_token %}
 
-         <input type="submit" value="Create Auction" />
+      {{form}}
 
-      </form>
+      <input type="submit" value="Create Auction" />
 
-      {%if error%}
+   </form>
 
-         <p>{{error}}</p>
+   {%if error%}
 
-      {% endif %}
-   </div>
+      <p>{{error}}</p>
+
+   {% endif %}
+
 
 {% endblock %}

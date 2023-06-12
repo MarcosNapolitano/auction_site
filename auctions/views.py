@@ -1,3 +1,5 @@
+import random
+
 from .models import User, Product, Bid, Comment
 
 from django.contrib.auth.decorators import login_required
@@ -25,9 +27,10 @@ class new_auction(ModelForm):
 
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Broom'}),
-            'description': forms.Textarea(attrs={'placeholder': 'The best broom ever!', 'style':'width:300px'}),
             'price': forms.NumberInput(attrs={'placeholder': 'u$D 10.00'}),
-            'image': forms.URLInput(attrs={'placeholder': 'Image url'})
+            'image': forms.URLInput(attrs={'placeholder': 'Image url'}),
+            'description': forms.Textarea(attrs={'placeholder': 'The best broom ever!'})
+
         }
 
 
@@ -57,9 +60,12 @@ def index(request):
     product_list = Product.objects.filter(is_open = True)
     most_sold   = product_list.filter(category = category["title"])[:5] #only 5 results
     most_recent = product_list.order_by('-created')[:5] #only 5 results
+    rand_index = product_list[random.randrange(len(product_list))] #random auction
 
     context = {"product_list" : product_list, "category" : category,
-               "most_sold" : most_sold, "most_recent" : most_recent}
+               "most_sold" : most_sold, "most_recent" : most_recent,
+               "rand_index": rand_index, "categories" : categories}
+               
 
     return render(request, "auctions/index.html", context)
 
@@ -78,10 +84,11 @@ def login_view(request):
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "auctions/login.html", {
-                "message": "Invalid username and/or password."
+                "message": "Invalid username and/or password.", 
+                "categories":categories
             })
     else:
-        return render(request, "auctions/login.html")
+        return render(request, "auctions/login.html", {"categories":categories})
 
 
 def logout_view(request):
@@ -99,7 +106,8 @@ def register(request):
         confirmation = request.POST["confirmation"]
         if password != confirmation:
             return render(request, "auctions/register.html", {
-                "message": "Passwords must match."
+                "message": "Passwords must match.", 
+                "categories":categories
             })
 
         # Attempt to create new user
@@ -108,12 +116,13 @@ def register(request):
             user.save()
         except IntegrityError:
             return render(request, "auctions/register.html", {
-                "message": "Username already taken."
+                "message": "Username already taken.",
+                "categories":categories
             })
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "auctions/register.html")
+        return render(request, "auctions/register.html", {"categories":categories})
 
 
 def display_item(request, pk, is_open = True):
@@ -171,9 +180,9 @@ def display_item(request, pk, is_open = True):
         #query comments
         comments = Comment.objects.filter(product_id = pk)
 
-        context = {"product"  : product,  "watchlist" : watchlist, "bids" : bids, 
-                   "last_bid" : last_bid, "owner"     : owner,     "open" : is_open, 
-                   "winner"   : winner,   "comments"  : comments}
+        context = {"product"  : product,  "watchlist" : watchlist, "bids"       : bids, 
+                   "last_bid" : last_bid, "owner"     : owner,     "open"       : is_open, 
+                   "winner"   : winner,   "comments"  : comments,  "categories" : categories}
 
         return render(request, "auctions/item.html", context)
     
@@ -199,7 +208,7 @@ def category(request, pk):
 
 
     if not products: products = None
-    context = {"products" : products, "category" : category}
+    context = {"products" : products, "category" : category, "categories" : categories}
 
     return render(request, "auctions/category.html", context)
 
@@ -221,22 +230,23 @@ def create_auction(request):
                 product.save()
 
             except IntegrityError:
-                return render(request, "auctions/createAuction.html", {"form":form, "error":error})
+                return render(request, "auctions/createAuction.html", {"form":form, "error":error, "categories" : categories})
             
             return HttpResponseRedirect(reverse("item", kwargs={'pk':product.id}))
 
         else:
 
-            return render(request, "auctions/createAuction.html", {"form":form})
+            return render(request, "auctions/createAuction.html", {"form":form, "categories" : categories})
             
-    return render(request, "auctions/createAuction.html", {"form":new_auction()})
+    return render(request, "auctions/createAuction.html", {"form":new_auction() , "categories" : categories})
 
 
 @login_required(login_url="login")
 def watchlist(request):
     
 
-    context = {"products" : Product.objects.filter(watchlist = request.user)}
+    context = {"products" : Product.objects.filter(watchlist = request.user), 
+               "categories" : categories}
 
     return render(request, "auctions/watchlist.html", context)
 

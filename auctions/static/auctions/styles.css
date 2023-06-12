@@ -22,6 +22,9 @@
     --button-color-light: #f9f9f9;
     --backdrop-light: rgba(0, 0, 0, 0.07);
 
+
+    /* side margin for the whole app */
+    --side-margin: 15%;
     
     color: var(--main-font);
     background: linear-gradient(var(--main-back-color1),var(--main-back-color2));
@@ -50,9 +53,9 @@ html{
 body{
     
     margin:0;
+    padding: 0;
     min-height: 100vh;
-    
-
+    font-size: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -62,13 +65,47 @@ body{
 
 
 
+@media(max-width:1920px) {
+    body{
+        font-size: 1rem;
+    }
+    
+}
+
+@media(max-width:1024px) {
+    body{
+        font-size: .9rem;
+    }
+    
+}
+
+main{
+    margin: 0 var(--side-margin);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+section{
+    margin: auto var(--side-margin);
+}
+
+
+
 h1{
-    margin: 0;
-    font-size: 5vh;
+    padding-left: .2em;
+    margin: 0 var(--side-margin);
 
 }
 
-hr{
+#header_hr{
+    margin: 0;
+    margin-bottom: 0;
+    border: 1px solid var(--accent3)
+}
+
+hr:last-of-type{
     margin: 8vh auto;
     margin-bottom: 4vh;
     border: 1px solid var(--accent3)
@@ -95,14 +132,12 @@ header{
 
 
 .nav{
-    width: 100%;
-    margin-top: 0;
+    margin: 0 var(--side-margin);
     padding: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     gap: 1rem;
-    border-bottom: 1px solid var(--accent3);
 
 }
 
@@ -115,9 +150,9 @@ header{
 .nav-item, .nav-item2{
     
     margin:0;
-    padding: 1vh 1vh;
+    padding: .5em .5em;
     list-style-type: none;
-    font-size: 1.8vh;
+    
 
 }
 
@@ -137,6 +172,25 @@ header{
     height: 100%;
     width: 100%;
     font-weight: 600;
+}
+
+#cat_bar{
+    padding: 1em;
+    margin: 0 var(--side-margin);
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: space-between;
+    list-style-type: none;
+
+}
+
+#cat_bar>li>a:hover{
+    text-decoration: underline;
+    color: var(--accent2)
 }
 
 /* #carrousel{
@@ -214,9 +268,10 @@ header{
     
     margin: 5vh auto;
     padding: 1vh;
-    width:80%;
+    width:95%;
     display: grid;
     grid-template-columns: 1fr 2fr;
+    align-items: center;
     border: 1px solid var(--accent3);
     border-radius: 8px;
     transition: width .5s;
@@ -233,16 +288,16 @@ header{
 
 .listing:hover{
     cursor: pointer;
-    width: 82%;
+    width: 97%;
 
 }
 
 
 #component{
-    margin: 1vh auto;
-    width: 70%;
+    margin: 1vh;
+    width: 100%;
     overflow-x:auto;
-    font-size: 2vh;
+    
 
 }
 
@@ -283,7 +338,209 @@ header{
 
 }
 
-#create>form{
+#create{
+    width: 80%;
+    display: grid;
+    grid-template-columns: .5fr 2fr;
+    column-gap: 1em;
+    justify-content: center;
+    align-items: center;
+}
+
+#create>label{
+    font-size: 1rem;
+    text-align: left;
+}
+
+#create>input, #create>select, #create>textarea{
+    margin: .5em 0;
+    width: 90%;
+    text-align: left;
+}
+
+#create>textarea{
+    max-height: 50%;
+    resize: none;
+}
+
+
+#create>input[type="submit"]{
+    width: 60%;
+    margin: .8em auto;
+    border: none;
+    text-align: center;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    background-color: var(--accent3);
+}
+
+#create>input[type="submit"]:hover{
+
+    background-color: rgb(24, 86, 143);
+   
+}
+
+
+
+/* ----------------------------------------- LOGIN PAGE -----------------------------------------*/
+
+h2{
+    font-size: 1.8rem;
+    text-align: center;
+    
+}
+form{
+    width: 100%;
+    text-align: center;
+    padding: 1em;
+
+
+}
+
+input, select, textarea{
+    font-size: 1rem;
+    width: 80%;
+    margin: 1em;
+    padding: .7em;
+    border: 1px solid var(--accent2);
+    border-radius: 10px;
+    
+}
+
+input[type="submit"]{
+    border: none;
+    background-color: var(--accent3);
+}
+input[type="submit"]:hover{
+
+    background-color: rgb(24, 86, 143);
+}
+
+#register{
+    color: var(--accent2)
+}
+
+/* ----------------------------------------- Watchlist -----------------------------------------*/
+
+
+.watchlist{
+    
+    margin: 5vh auto;
+    padding: 1vh;
+    scale: 100%;
+    display: grid;
+    column-gap: 2em;
+    grid-template-columns: 1fr 2fr;
+    border: 1px solid var(--accent3);
+    border-radius: 8px;
+    transition: scale .5s;
+
+}
+
+.watchlist>center>img{
+    width: 200px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+
+}
+
+.watchlist:hover{
+    cursor: pointer;
+    scale: 105%;
+
+}
+
+
+/* ----------------------------------------- Product -----------------------------------------*/
+
+
+.item{
+    margin-top: 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2em;
+    
+}
+
+.item_title{
+    margin: 0;
+    text-align: left;
+}
+
+.item_main_pic{
+    width: 50%;
+    object-fit:scale-down
+
+}
+
+.item_actions>h3{
+    margin: 0;
+
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.item_actions>ul{
+    padding: 0;
+}
+
+.item_actions>ul>li{
+    list-style-type: none;
+}
+
+.item_actions>form{
+    padding: 0;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.item_actions>form>input{
+    align-self: flex-start;
+    margin: .5em;
+    margin-left:0;
+    width: 70%;
+}
+
+.item_actions>form>label{
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: left;
+    align-self: flex-start;
+}
+
+.item_descr{
+    align-self: flex-start;
+}
+
+
+
+
+.comment_form>form>input{
+    width: 20%;
+}
+
+
+
+.comment_form>form>textarea{
+    max-height: 50%;
+    resize: none;
+}
+
+
+.comments{
+    width: 70%;
+}
+
+.comments>ul{
+    padding:0
+}
+
+.comments>ul>li{
+    width: 100%;
+    margin: .5em auto;
+    list-style-type: none;
+    background-color: var(--accent3);
 }

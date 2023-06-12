@@ -4,75 +4,90 @@
 
 
 {% block body %}
-    <h2>{{ product.title }}</h2>
-    {% if user.is_authenticated %}
-        {% if watchlist %}
-            <form action="{{product.id}}/remove">
-                <input type="submit" value="Remove from Watchlist" />
-            </form>
-        {% else %}
-            <form action="{{product.id}}/add">
-                <input type="submit" value="Add to Watchlist" />
-            </form>
-        {% endif %}
-        {% if owner and open %}
-            <form action="{{product.id}}/close">
-                <input type="submit" value="Close Auction" />
-            </form>
-            
-        {% endif %}
 
-        {% if not open %}
-            <p>Closed Auction</p>
-        {% endif %}
+    <div class="item">
+        <img class="item_main_pic" src={{product.image}}></img>
 
-    {% endif %}
+        <div class="item_actions">
 
-    <img src={{product.image}}></img>
-    <h3>{{product.price}}</h3>
-    <ul>
-        <li>Description: {{product.description}}</li>
-        <li>Category: {{product.category}}</li>
-        <li>Created: {{product.created}}</li>
-    </ul>
+            <h2 class="item_title">{{ product.title }}</h2>
+            <h3>Price: ${{product.price}}</h3>
+            <ul>
+                <li>Category: {{product.category}}</li>
+                <li>Created: {{product.created}}</li>
+            </ul>
 
-    {% if bids and open %}
-        <p>Currently {{ bids|length }} bid(s) so far.{% if last_bid %} You are the current bid.{% endif %}</p>
-    {% endif %}
-
-    
-
-    {% if user.is_authenticated and open %}
-        <form action="{{product.id}}/bid">
-            <label for="price">Place a bid!</label>
-            <input type="number" placeholder="Place your Bid..." min={{product.price}} max="999999.99" name="price">
-            <input type="submit" value="Bid!" />
-        </form>
-    {% elif not user.is_authenticated  %}
-        <p>Please <a href="{% url 'login' %}">Log In</a> to place a bid!</p>
-    {% elif not open %}
-        <p>
-            Auction is closed!
-            {% if winner %}
-            Congratulations {{winner}} for winning the auction!
+            {% if bids and open %}
+                <p>Currently {{ bids|length }} bid(s) so far.{% if last_bid %} You are the current bid.{% endif %}</p>
             {% endif %}
-        </p>
-    {% endif %}
+
+            
+
+            {% if user.is_authenticated and open %}
+                <form action="{{product.id}}/bid">
+                    <label for="price">Place a bid!</label>
+                    <input id="price" type="number" placeholder="Place your Bid..." min={{product.price}} max="999999.99" name="price">
+                    <input type="submit" value="Bid!" />
+                </form>
+                {% if watchlist %}
+                    <form action="{{product.id}}/remove">
+                        <input type="submit" value="Remove from Watchlist" />
+                    </form>
+                {% else %}
+                    <form action="{{product.id}}/add">
+                        <input type="submit" value="Add to Watchlist" />
+                    </form>
+                {% endif %}
+                {% if owner and open %}
+                    <form action="{{product.id}}/close">
+                        <input type="submit" value="Close Auction" />
+                    </form>
+                
+                {% elif not open %}
+                    <p>
+                        Auction is closed!
+                        {% if winner %}
+                        Congratulations {{winner}} for winning the auction!
+                        {% endif %}
+                    </p>
+                {% endif %}
+            {% elif not user.is_authenticated  %}
+                <p>Please <a href="{% url 'login' %}">Log In</a> to place a bid!</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="item_descr">
+
+        <h3>Item's description:</h3>
+        <p>{{product.description}}</p>
+
+    </div>
+
 
     {% if user.is_authenticated %}
-        <form method="POST">
-        {% csrf_token %}
-            <label for="comment">Leave a comment!</label>
-            <textarea name="comment" placeholder="Nice Item!" rows="4" cols="50"></textarea>
-            <input type="submit" value="Comment!" />
-        </form>
+        <div class="comment_form">
+            <form method="POST">
+            {% csrf_token %}
+                <h3 for="comment">Leave a comment!</h3>
+                <textarea id="comment" name="comment" placeholder="Nice Item!" rows="1" cols="50"></textarea>
+                <input type="submit" value="Comment!" />
+            </form>
+        </div>
+
+    {% else %}
+        <p>Please <a href{<a href="{% url 'login' %}">}>Log in </a>to leave a comment!</p>
     {% endif %}
+
+
     {% if comments %}
-    <ul>
-        {% for i in comments %}
-        <li>{{i.comment}}</li>
-        {% endfor %}
-    </ul>
+        <div class="comments">
+            <ul>
+                {% for i in comments %}
+                <li>{{i.comment}}</li>
+                <small>@{{i.user}} commented - {{i.created|date:"d/m/y"}}</small>
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
     
 {% endblock %}

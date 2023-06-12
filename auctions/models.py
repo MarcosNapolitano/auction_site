@@ -28,7 +28,6 @@ class Product(models.Model):
     #needs a related_name to prevent clashing with the many to many field
     user        = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "author") 
     title       = models.CharField(max_length = 30, unique = True)
-    description = models.TextField()
     price       = models.DecimalField(max_digits = 8, decimal_places = 2)
     created     = models.DateField(auto_now_add = True)
     updated     = models.DateTimeField(auto_now = True)
@@ -38,6 +37,7 @@ class Product(models.Model):
     is_open     = models.BooleanField(default = True)
     winner      = models.ForeignKey(User, default = None, null = True, blank = True, 
                                           on_delete = models.SET(get_user), related_name = "winner")
+    description = models.TextField()
 
     def __str__(self):
         return self.title
