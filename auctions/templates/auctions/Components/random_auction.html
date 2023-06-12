@@ -1,0 +1,25 @@
+<div id="component">
+
+    <div class="component_title">
+        <h2>Random Auction!</h2>
+    </div>
+
+    <a href="{% url 'item' rand_index.id %}">
+        <div class="listing">
+
+            {% if rand_index.image %}
+            <center>
+                <img src={{rand_index.image}} alt={{rand_index.title}}></img>
+            </center>
+            {% endif %}
+            <div class="listing-desc">
+                <h3>{{rand_index.title}}</h3>
+                <p><b>Price:</b> ${{rand_index.price}}</p>
+                <p>{{rand_index.description}}</p>
+                <p>Posted on {{rand_index.created}}</p>
+            </div>
+            
+        </div>
+    </a>
+
+</div>
