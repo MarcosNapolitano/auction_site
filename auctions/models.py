@@ -12,11 +12,11 @@ class Product(models.Model):
 
     #categories
     category_choice = [
-        ("Fashion & Apparel", "Fashion & Apparel"),
-        ("Home décor & Maintenance" , "Home décor & Maintenance"),
+        ("Clothing", "Clothing"),
+        ("Home décor" , "Home décor"),
         ("Beauty & Personal Care" , "Beauty & Personal Care"),
-        ("Eco-friendly & Natural products" , "Eco-friendly & Natural products"),
-        ("Healthcare & Fitness" , "Healthcare & Fitness"),
+        ("Foods and Beverages" , "Foods and Beverages"),
+        ("Fitness" , "Fitness"),
         ("Pet products" , "Pet products")
     ]
 

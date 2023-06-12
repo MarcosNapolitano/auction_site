@@ -9,12 +9,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Auctions{% endblock %}</title>
         <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/7eab90d447.js" crossorigin="anonymous"></script>
     </head>
     <body>
         <header>
             {% include "auctions/Components/topbar.html" %}
             <hr id="header_hr">
-            <h1>Auctions</h1>
+            {% include "auctions/Components/search_bar.html" %}
             {% include "auctions/Components/cat_bar.html" %}
 
         </header>

@@ -88,7 +88,7 @@ main{
 }
 
 section{
-    margin: auto var(--side-margin);
+    margin: auto auto;
 }
 
 
@@ -543,4 +543,90 @@ input[type="submit"]:hover{
     margin: .5em auto;
     list-style-type: none;
     background-color: var(--accent3);
+}
+
+/* ----------------------------------------- Categories -----------------------------------------*/
+
+#main_grid{
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    list-style-type: none; /* Remove bullets */
+    text-align: center;
+    gap: 2em;
+    padding: 0; 
+    margin-top: 2.1vh; 
+  
+}
+
+#main_grid >a>div{
+    box-sizing: border-box;
+    border: 1px solid var(--main-back-color1);
+    padding: .5em;
+    scale:100%;  
+    color: var(--main-font);
+    transition: scale 0.5s, color 0.5s;
+}
+
+#main_grid >a>div:hover{
+    cursor:pointer;
+    scale:105%;
+
+}
+#main_grid >a>div:hover>div>.icon{
+    scale:105%;
+
+}
+
+#main_grid >a>div:hover{
+    border: 1px solid var(--accent2);
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--accent2);
+    color: var(--accent2);
+}
+
+#main_grid >a>div>div>i{
+    font-size: 5rem;
+    
+}
+
+.category_title{
+    margin: 0.5em auto
+}
+
+/* ----------------------------------------- Search -----------------------------------------*/
+
+#search_container{
+    margin: auto var(--side-margin);
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#logo{
+    width: 8%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    margin-right: 1.5em;
+
+}
+
+#search_form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    
+}
+
+#search_form>input{
+    margin: 1em .5em;
+    width: 50%;
+    
+}
+
+#search_form>input[type="submit"]{
+    width: 10%;
+    
 }

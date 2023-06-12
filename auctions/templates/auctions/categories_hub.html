@@ -3,15 +3,35 @@
 {% block title %}Auctions | Categories {% endblock %}
 
 {% block body %}
-    <h2>Categories:</h2>
+    <h2 class="category_title">Categories:</h2>
 
     <p>Please choose from one of this categories!</p>
-    <ul>
-    {% for i in categories %}
+
+    <ul id="main_grid">
     
-        <li><a href="categories/{{i.0}}">{{i.1}}</a></li>
+    {% for i in categories %}
+
+        
+
+        <a href="categories/{{i.0}}">
+            <div>
+                <div>
+                    <i class="fa-solid fa-shirt"></i>
+                </div>
+                <li id="exercise_tracker">{{i.1}}</li>
+            </div>
+        </a>
+
+    
     
     {% endfor %}
+
     </ul>
+    
+    <!-- <i class="fa-solid fa-house-chimney"></i>
+    <i class="fa-solid fa-bath"></i>
+    <i class="fa-solid fa-martini-glass"></i>
+    <i class="fa-solid fa-dumbbell"></i>
+    <i class="fa-solid fa-dog"></i> -->
 
 {% endblock %}
