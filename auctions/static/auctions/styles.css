@@ -88,7 +88,8 @@ main{
 }
 
 section{
-    margin: auto auto;
+    margin: 0;
+    min-width: 100%;
 }
 
 
@@ -175,15 +176,14 @@ header{
 }
 
 #cat_bar{
-    padding: 1em;
+    padding: .5em;
     margin: 0 var(--side-margin);
     display: flex;
     flex-direction: row;
     text-align: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 1em;
-    justify-content: space-between;
+    justify-content: space-evenly;
     list-style-type: none;
 
 }
@@ -193,74 +193,7 @@ header{
     color: var(--accent2)
 }
 
-/* #carrousel{
-    overflow: hidden;
 
-}
-
-.slide{
-    height: 200px;
-    width: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    
-
-
-}
-
-.carrousel_item{
-
-    height: 100%;
-    width: 100%;
-    flex-shrink: 0;
-
-}
-
-#carrousel_item1{
-    background-color: #213547;
-
-}
-
-#carrousel_item2{
-    background-color: #72642a;
-    
-}
-#carrousel_item3{
-    background-color: #36722a;
-    
-}
-
-
-.first{
-    margin-left: -100%;
-}
-
-.carrousel_card{
-    
-    height: 100%;
-}
-
-/* .carrousel_arrows{
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    color: var(--main-font);
-    font-size: 3vh;
-
-} */
-
-/* .carrousel_arrows>#arrow1{
-    padding-left: 2vh;
-}
-
-.carrousel_arrows>#arrow2{
-    padding-right: 2vh;
-}  */
 
 
 
@@ -295,16 +228,13 @@ header{
 
 #component{
     margin: 1vh;
-    width: 100%;
-    overflow-x:auto;
     
-
 }
 
 .component_title{
     display: flex;
     align-items:baseline;
-    gap: 1rem;
+
 }
 
 .component_body{
@@ -336,6 +266,15 @@ header{
 .component_item:hover>p{
     text-decoration: underline;
 
+}
+
+#rand_image{
+    
+    width: 200px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    
+    
 }
 
 #create{
@@ -630,3 +569,7 @@ input[type="submit"]:hover{
     width: 10%;
     
 }
+
+
+/* ----------------------------------------- Carousel -----------------------------------------*/
+
