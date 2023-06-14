@@ -162,7 +162,7 @@ def display_item(request, pk, is_open = True):
             last_bid = bids.order_by('-created').first() #prevents error if NONE!
 
             #only if authenticated
-            if request.user.is_authenticated:
+            if request.user.is_authenticated and last_bid:
 
                 if request.user.id == last_bid.user.id: last_bid = True
                 else: last_bid = False

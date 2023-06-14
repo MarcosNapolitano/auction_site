@@ -3,32 +3,15 @@
 {% block body %}
     <section aria-label="hola">
 
-        {% for i in product_list %}
 
-        <a href="{% url 'item' i.id %}">
-            <div class="listing">
+        {% include "auctions/Components/carousel.html" %}
 
-                {% if i.image %}
-                <center>
-                    <img src={{i.image}} alt={{i.title}}></img>
-                </center>
-                {% endif %}
-                <div class="listing-desc">
-                    <h3>{{i.title}}</h3>
-                    <p><b>Price:</b> ${{i.price}}</p>
-                    <p>{{i.description}}</p>
-                    <p>Posted on {{i.created}}</p>
-                </div>
-                
-            </div>
-        </a>
-    
-        {% endfor %}
 
     </section>
 
     <section>
-
+        
+    
     {% include "auctions/Components/most_selled_cat.html" %}
     {% include "auctions/Components/random_auction.html" %}
     {% include "auctions/Components/most_recent.html" %}
