@@ -26,7 +26,7 @@
             {% if user.is_authenticated and open %}
                 <form action="{{product.id}}/bid">
                     <label for="price">Place a bid!</label>
-                    <input id="price" type="number" placeholder="Place your Bid..." min={{product.price}} max="999999.99" name="price">
+                    <input id="price" type="number" placeholder="Place your Bid..." min={{product.price}} max="999999.99" step="0.1" name="price">
                     <input type="submit" value="Bid!" />
                 </form>
                 {% if watchlist %}
@@ -52,7 +52,7 @@
                     </p>
                 {% endif %}
             {% elif not user.is_authenticated  %}
-                <p>Please <a href={% url 'login' %}>Log In</a> to place a bid!</p>
+                <p>Please <a href={% url 'login' %}><b>Log in </b></a> to place a bid!</p>
             {% endif %}
         </div>
     </div>
@@ -66,16 +66,16 @@
 
     {% if user.is_authenticated %}
         <div class="comment_form">
+            <h3 for="comment">Leave a comment!</h3>
             <form method="POST">
             {% csrf_token %}
-                <h3 for="comment">Leave a comment!</h3>
                 <textarea id="comment" name="comment" placeholder="Nice Item!" rows="1" cols="50"></textarea>
                 <input type="submit" value="Comment!" />
             </form>
         </div>
 
     {% else %}
-        <p>Please <a href={"{% url 'login' %}">}>Log in </a>to leave a comment!</p>
+        <p>Please <a href="{% url 'login' %}"><b>Log in </b></a>to leave a comment!</p>
     {% endif %}
 
 

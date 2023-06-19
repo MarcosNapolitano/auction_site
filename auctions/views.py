@@ -41,6 +41,7 @@ def query_product(id):
     except ObjectDoesNotExist:
         return None
 
+
 #need a first run to work
 def categories_first():
     #query a product that MUST exist just to get the category list
@@ -56,7 +57,7 @@ def categories_first():
 
 def index(request):
 
-    category = {"title" : "Home décor & Maintenance", "id" : 1} #could later be changed
+    category = {"title" : "Home décor", "id" : 1} #could later be changed
     product_list = Product.objects.filter(is_open = True)
     most_sold   = product_list.filter(category = category["title"])[:5] #only 5 results
     most_recent = product_list.order_by('-created')[:5] #only 5 results
@@ -68,6 +69,24 @@ def index(request):
                
 
     return render(request, "auctions/index.html", context)
+
+
+def search(request):
+
+    #q is the value and '' default in case None
+    to_search = request.GET.get('search','')
+    products = Product.objects.filter(title__icontains=to_search)
+
+    #prevents search if empty
+    if to_search=="": return index(request)
+
+    length = len(products)
+
+    #if no results you get a message, if just one result, you get the page if 1+ you get the list
+
+    if length<1: return render(request, "auctions/search.html", {"categories" : categories})
+    if length==1: return display_item(request, products[0].id)
+    if length>1: return render(request, "auctions/search.html", {"products":products, "categories" : categories})
 
 
 def login_view(request):
@@ -100,6 +119,7 @@ def register(request):
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
+        first_name = username
 
         # Ensure password matches confirmation
         password = request.POST["password"]
@@ -113,6 +133,7 @@ def register(request):
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
+            user.first_name = first_name
             user.save()
         except IntegrityError:
             return render(request, "auctions/register.html", {

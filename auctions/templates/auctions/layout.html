@@ -7,9 +7,33 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="Auctions Site" content="eCommerce">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}Auctions{% endblock %}</title>
+
+        <meta name="description" content="Auction Site">
+        <meta name="author" content="Marcos Napolitano">
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content='Marcos Napolitano | Auction Site'>
+        <meta property="og:description" content="Let's build a great project together!">
+        <meta property="og:url" content='https://marcosnapolitano.github.io/auction_site'>
+        <meta property="og:site_name" content="Marcos Napolitano">
+        <meta property="og:image" content="https://marcosnapolitano.github.io/Assets/thumbnail.jpg">
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="627" />
+        <meta property="og:image:type" content="image/jpeg" />
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta property="twitter:domain" content="marcosnapolitano.github.io">
+        <meta property="twitter:url" content="https://marcosnapolitano.github.io/auction_site">
+        <meta name="twitter:title" content="Marcos Napolitano | Auction Site">
+        <meta name="twitter:description" content="Let's build a great project together!">
+        <meta name="twitter:image" content="https://marcosnapolitano.github.io/Assets/thumbnail.jpg">
+        
+        <link rel="icon" type="image/x-icon" href="https://marcosnapolitano.github.io/Assets/icon.ico">
+
         <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
         <script src="https://kit.fontawesome.com/7eab90d447.js" crossorigin="anonymous"></script>
+        <title>{% block title %}Auctions{% endblock %}</title>
+
     </head>
     <body>
         <header>

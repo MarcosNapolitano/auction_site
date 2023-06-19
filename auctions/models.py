@@ -15,7 +15,6 @@ class Product(models.Model):
         ("Clothing", "Clothing"),
         ("Home décor" , "Home décor"),
         ("Beauty & Personal Care" , "Beauty & Personal Care"),
-        ("Foods and Beverages" , "Foods and Beverages"),
         ("Fitness" , "Fitness"),
         ("Pet products" , "Pet products")
     ]

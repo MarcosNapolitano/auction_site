@@ -1,0 +1,42 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    <h2 class="category_title">Showing results:</h2>
+
+
+    {% if products %}
+
+        {% for i in products %}
+
+        <a href="{% url 'item' i.id %}">
+            <div class="watchlist">
+    
+                {% if i.image %}
+                <center>
+                    <img src={{i.image}} alt={{i.title}}></img>
+                </center>
+                {% endif %}
+                <div class="listing-desc">
+                    <h3>{{i.title}}</h3>
+                    <p><b>Price:</b> ${{i.price}}</p>
+                    <p>{{i.description|truncatewords:25}}</p>
+                    <p>Posted on {{i.created}}</p>
+                </div>
+                
+            </div>
+        </a>
+
+        {% endfor %}
+
+    
+    {% else %}
+
+        <h4>Nothing here yet!</h4>
+    
+    {% endif %}
+    
+    
+    
+
+{% endblock %}

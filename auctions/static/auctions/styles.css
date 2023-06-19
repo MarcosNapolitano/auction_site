@@ -320,8 +320,34 @@ header{
     justify-content: space-around;
     gap: 1rem;
     cursor:pointer;
+    overflow-x: scroll;
 
     
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.component_body::-webkit-scrollbar {
+    display: none;
+}
+  
+/* Hide scrollbar for IE, Edge and Firefox */
+.component_body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+@media(max-width:450px) {
+
+    .component_body::-webkit-scrollbar {
+        display: auto;
+    }
+      
+    .component_body {
+        -ms-overflow-style: auto;  
+        scrollbar-width: auto;
+    }
+    
+
 }
 
 .component_item>img{
@@ -462,6 +488,11 @@ li[data-active="true"]{
     animation: f_left 1s reverse;
 
     
+}
+
+input[type="submit"]{
+    cursor: pointer;
+
 }
 
 .button{
@@ -612,7 +643,7 @@ form{
 
 input, select, textarea{
     font-size: 1rem;
-    width: 80%;
+    width: 20%;
     margin: 1em;
     padding: .7em;
     border: 1px solid var(--accent2);
@@ -653,7 +684,7 @@ input[type="submit"]:hover{
 .watchlist>center>img{
     width: 200px;
     aspect-ratio: 1/1;
-    object-fit: cover;
+    object-fit: scale-down;
 
 }
 
@@ -685,7 +716,8 @@ input[type="submit"]:hover{
 
 .item_main_pic{
     width: 50%;
-    object-fit:scale-down
+    aspect-ratio: 16/9;
+    object-fit:scale-down;
 
 }
 
@@ -736,10 +768,26 @@ input[type="submit"]:hover{
     align-self: flex-start;
 }
 
+.comment_form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.comment_form>h3{
+    margin-bottom: 0
+}
+
+.comment_form>form{
+    display: flex;
+}
+
+.comment_form>form>textarea{
+    width: 50%;
+}
 
 
-
-.comment_form>form>input{
+.comment_form>form>input[type="submit"]{
     width: 20%;
 }
 
@@ -799,7 +847,7 @@ input[type="submit"]:hover{
 #main_grid{
 
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     list-style-type: none; /* Remove bullets */
     text-align: center;
     gap: 2em;
@@ -810,7 +858,7 @@ input[type="submit"]:hover{
 
 #main_grid >a>div{
     box-sizing: border-box;
-    border: 1px solid var(--main-back-color1);
+    border: .1px solid var(--main-back-color1);
     padding: .5em;
     scale:100%;  
     color: var(--main-font);
