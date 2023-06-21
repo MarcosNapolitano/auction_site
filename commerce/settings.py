@@ -28,6 +28,8 @@ SECRET_KEY = config("SECRET_KEY")
 DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
+#from django 4 upwards!
+CSRF_TRUSTED_ORIGINS=['https://marcos-napolitano-auctions-site.up.railway.app/*']
 
 
 # Application definition

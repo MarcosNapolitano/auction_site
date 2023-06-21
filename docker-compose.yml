@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  wiki:
+    build: .
+    volumes:
+      - .:/usr/src/auctions
+    ports:
+      - "8000:8000"
