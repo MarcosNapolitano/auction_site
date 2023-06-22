@@ -1,1 +1,1 @@
-staticfiles/admin/** -linguist-detectable
+staticfiles/** -linguist-detectable
